@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Pfim.dds.Bc6;
 
 namespace Pfim.dds.Bc6hBc7
 {
@@ -19,7 +18,7 @@ namespace Pfim.dds.Bc6hBc7
             return false;
         }
 
-        public static void TransformInverse(INTEndPntPair[] aEndPts, LDRColorA Prec, bool bSigned)
+        public static void TransformInverse(Span<INTEndPntPair> aEndPts, LDRColorA Prec, bool bSigned)
         {
             INTColor WrapMask = new INTColor((1 << Prec.r) - 1, (1 << Prec.g) - 1, (1 << Prec.b) - 1);
             aEndPts[0].B += aEndPts[0].A; aEndPts[0].B &= WrapMask;

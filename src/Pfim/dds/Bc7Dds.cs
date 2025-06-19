@@ -1,7 +1,6 @@
 ﻿using Pfim.dds.Bc6hBc7;
 using System;
 using System.Diagnostics;
-using Pfim.dds.Bc7;
 
 namespace Pfim.dds
 {

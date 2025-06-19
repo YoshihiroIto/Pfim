@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Pfim.dds.Bc6;
 
 namespace Pfim.dds
 {
@@ -322,7 +321,7 @@ namespace Pfim.dds
                 Debug.Assert(ms_aModeToInfo[uMode] < ms_aDesc.Length);
                 ref ModeInfo info = ref ms_aInfo[ms_aModeToInfo[uMode]];
 
-                INTEndPntPair[] aEndPts = new INTEndPntPair[Constants.BC6H_MAX_REGIONS];
+                Span<INTEndPntPair> aEndPts = stackalloc INTEndPntPair[Constants.BC6H_MAX_REGIONS];
                 for (int i = 0; i < aEndPts.Length; ++i)
                 {
                     aEndPts[i] = new INTEndPntPair(new INTColor(), new INTColor());
@@ -410,12 +409,12 @@ namespace Pfim.dds
                     Debug.Assert(uRegion < Constants.BC6H_MAX_REGIONS);
 
                     // Unquantize endpoints and interpolate
-                    int r1 = Unquantize(aEndPts[uRegion].A.r, info.RGBAPrec[0][0].r, bSigned);
-                    int g1 = Unquantize(aEndPts[uRegion].A.g, info.RGBAPrec[0][0].g, bSigned);
-                    int b1 = Unquantize(aEndPts[uRegion].A.b, info.RGBAPrec[0][0].b, bSigned);
-                    int r2 = Unquantize(aEndPts[uRegion].B.r, info.RGBAPrec[0][0].r, bSigned);
-                    int g2 = Unquantize(aEndPts[uRegion].B.g, info.RGBAPrec[0][0].g, bSigned);
-                    int b2 = Unquantize(aEndPts[uRegion].B.b, info.RGBAPrec[0][0].b, bSigned);
+                    int r1 = Unquantize(aEndPts[(int)uRegion].A.r, info.RGBAPrec[0][0].r, bSigned);
+                    int g1 = Unquantize(aEndPts[(int)uRegion].A.g, info.RGBAPrec[0][0].g, bSigned);
+                    int b1 = Unquantize(aEndPts[(int)uRegion].A.b, info.RGBAPrec[0][0].b, bSigned);
+                    int r2 = Unquantize(aEndPts[(int)uRegion].B.r, info.RGBAPrec[0][0].r, bSigned);
+                    int g2 = Unquantize(aEndPts[(int)uRegion].B.g, info.RGBAPrec[0][0].g, bSigned);
+                    int b2 = Unquantize(aEndPts[(int)uRegion].B.b, info.RGBAPrec[0][0].b, bSigned);
                     int[] aWeights = info.uPartitions > 0 ? Constants.g_aWeights3 : Constants.g_aWeights4;
                     INTColor fc = new INTColor();
                     fc.r = FinishUnquantize((r1 * (Constants.BC67_WEIGHT_MAX - aWeights[uIndex]) + r2 * aWeights[uIndex] + Constants.BC67_WEIGHT_ROUND) >> Constants.BC67_WEIGHT_SHIFT, bSigned);

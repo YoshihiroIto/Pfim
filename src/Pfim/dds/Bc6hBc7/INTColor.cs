@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Pfim.dds.Bc6;
 
 namespace Pfim.dds.Bc6hBc7
 {
@@ -18,15 +17,11 @@ namespace Pfim.dds.Bc6hBc7
         }
     };
 
-    internal class INTColor
+    internal struct INTColor
     {
         public int r, g, b;
         public int pad;
 
-        public INTColor()
-        {
-
-        }
         public INTColor(int nr, int ng, int nb)
         {
             r = nr;
