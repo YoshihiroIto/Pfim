@@ -1,4 +1,6 @@
-﻿namespace Pfim
+﻿using System.Runtime.CompilerServices;
+
+namespace Pfim
 {
     public class Dxt1Dds : CompressedDds
     {
@@ -15,6 +17,7 @@
         public override ImageFormat Format => ImageFormat.Rgba32;
         public override int BitsPerPixel => 8 * PIXEL_DEPTH;
 
+        [SkipLocalsInit]
         protected override unsafe int Decode(byte[] stream, byte[] data, int streamIndex, uint dataIndex, uint stride)
         {
             // Colors are stored in a pair of 16 bits

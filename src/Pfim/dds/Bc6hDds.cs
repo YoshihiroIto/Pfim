@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Pfim.dds
@@ -295,6 +296,7 @@ namespace Pfim.dds
         protected override byte DivSize => 4;
         protected override byte CompressedBytesPerBlock => 16;
 
+        [SkipLocalsInit]
         protected override int Decode(byte[] stream, byte[] data, int streamIndex, uint dataIndex, uint stride)
         {
             // I would prefer to use Span, but not sure if I should reference System.Memory in this project

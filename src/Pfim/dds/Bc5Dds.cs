@@ -1,4 +1,6 @@
-﻿namespace Pfim.dds
+﻿using System.Runtime.CompilerServices;
+
+namespace Pfim.dds
 {
     public class Bc5Dds : CompressedDds
     {
@@ -12,6 +14,7 @@
         protected override byte DivSize => 4;
         protected override byte CompressedBytesPerBlock => 16;
 
+        [SkipLocalsInit]
         protected override unsafe int Decode(byte[] stream, byte[] data, int streamIndex, uint dataIndex, uint stride)
         {
             byte* _firstGradient = stackalloc byte[8];

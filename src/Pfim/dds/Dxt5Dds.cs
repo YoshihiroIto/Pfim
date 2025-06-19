@@ -1,4 +1,5 @@
-﻿using Pfim.dds;
+﻿using System.Runtime.CompilerServices;
+using Pfim.dds;
 
 namespace Pfim
 {
@@ -18,6 +19,7 @@ namespace Pfim
 
         protected override byte PixelDepthBytes => PIXEL_DEPTH;
 
+        [SkipLocalsInit]
         protected override unsafe int Decode(byte[] stream, byte[] data, int streamIndex, uint dataIndex, uint stride)
         {
             byte* alpha = stackalloc byte[8];
