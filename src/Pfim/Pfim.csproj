@@ -27,4 +27,7 @@
     <Version>$(Major).$(Minor).$(Revision)</Version>
     <FileVersion>$(Major).$(Minor).$(Revision)</FileVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.6.3" />
+  </ItemGroup>
 </Project>

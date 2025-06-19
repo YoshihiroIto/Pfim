@@ -1,6 +1,7 @@
 ﻿using Pfim.dds.Bc6hBc7;
 using System;
 using System.Diagnostics;
+using Pfim.dds.Bc7;
 
 namespace Pfim.dds
 {
@@ -96,10 +97,10 @@ namespace Pfim.dds
                 byte uIndexMode = GetBits(ref uStartBit, ms_aInfo[uMode].uIndexModeBits);
                 Debug.Assert(uIndexMode < 2);
 
-                LDRColorA[] c = new LDRColorA[Constants.BC7_MAX_REGIONS << 1];
+                Span<LDRColorA> c = stackalloc LDRColorA[Constants.BC7_MAX_REGIONS << 1];
                 for (i = 0; i < c.Length; ++i) c[i] = new LDRColorA();
-                LDRColorA RGBAPrec = ms_aInfo[uMode].RGBAPrec;
-                LDRColorA RGBAPrecWithP = ms_aInfo[uMode].RGBAPrecWithP;
+                ref LDRColorA RGBAPrec = ref ms_aInfo[uMode].RGBAPrec;
+                ref LDRColorA RGBAPrecWithP = ref ms_aInfo[uMode].RGBAPrecWithP;
 
                 Debug.Assert(uNumEndPts <= (Constants.BC7_MAX_REGIONS << 1));
 
@@ -189,7 +190,7 @@ namespace Pfim.dds
                     c[i] = Unquantize(c[i], RGBAPrecWithP);
                 }
 
-                byte[] w1 = new byte[Constants.NUM_PIXELS_PER_BLOCK], w2 = new byte[Constants.NUM_PIXELS_PER_BLOCK];
+                Span<byte> w1 = stackalloc byte[Constants.NUM_PIXELS_PER_BLOCK], w2 = stackalloc byte[Constants.NUM_PIXELS_PER_BLOCK];
 
                 // read color indices
                 for (i = 0; i < Constants.NUM_PIXELS_PER_BLOCK; i++)
@@ -226,17 +227,17 @@ namespace Pfim.dds
                     LDRColorA outPixel = new LDRColorA();
                     if (uIndexPrec2 == 0)
                     {
-                        LDRColorA.Interpolate(c[uRegion << 1], c[(uRegion << 1) + 1], w1[i], w1[i], uIndexPrec, uIndexPrec, outPixel);
+                        LDRColorA.Interpolate(c[uRegion << 1], c[(uRegion << 1) + 1], w1[i], w1[i], uIndexPrec, uIndexPrec, ref outPixel);
                     }
                     else
                     {
                         if (uIndexMode == 0)
                         {
-                            LDRColorA.Interpolate(c[uRegion << 1], c[(uRegion << 1) + 1], w1[i], w2[i], uIndexPrec, uIndexPrec2, outPixel);
+                            LDRColorA.Interpolate(c[uRegion << 1], c[(uRegion << 1) + 1], w1[i], w2[i], uIndexPrec, uIndexPrec2, ref outPixel);
                         }
                         else
                         {
-                            LDRColorA.Interpolate(c[uRegion << 1], c[(uRegion << 1) + 1], w2[i], w1[i], uIndexPrec2, uIndexPrec, outPixel);
+                            LDRColorA.Interpolate(c[uRegion << 1], c[(uRegion << 1) + 1], w2[i], w1[i], uIndexPrec2, uIndexPrec, ref outPixel);
                         }
                     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Pfim.dds.Bc6;
 
 namespace Pfim.dds.Bc6hBc7
 {
